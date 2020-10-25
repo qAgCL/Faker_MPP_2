@@ -8,24 +8,23 @@ namespace Facker
 {
     class Program
     {
+        public class gi { public int da; };
         public class hui
         {
-            int dasd;
+            public int dasd;
+            public char test;
+            public gi gi;
+            public int sef { get; }
+
+
+
+
         }
         static void Main(string[] args)
         {
             Faker faker = new Faker();
-            List<int> type = new List<int>();
 
-            foreach(var i in faker.Create<List<List<int>>>())
-            {
-                foreach (var j in i)
-                {
-                    Console.WriteLine(j.ToString());
-    
-                }
-                Console.WriteLine();
-            }
+       
             Console.ReadLine();
         }
     }

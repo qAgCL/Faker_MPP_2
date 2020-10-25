@@ -49,4 +49,13 @@ namespace Facker
                 return RandomValue;
             }
         }
+
+        public class BoolGenerator : Generator<bool>
+        {
+            public override bool ObjectGeneration(Random random)
+            {
+                bool RandomValue = Convert.ToBoolean(random.Next(0, 1));
+                return RandomValue;
+            }
+        }
 }

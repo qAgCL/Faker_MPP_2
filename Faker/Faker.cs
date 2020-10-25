@@ -25,6 +25,7 @@ namespace Facker
                 }
             }
             generators.Add(typeof(List<>), new ListGenerator());
+
         }
         private bool IsRequiredType(Type GeneratorType, Type RequiredType)
         {
@@ -69,7 +70,25 @@ namespace Facker
             {
                 return generator.Generate(Context);
             }
-            return null;
+
+            var obj = Activator.CreateInstance(type);
+
+            FieldInfo[] Fields = obj.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public);
+            PropertyInfo[] Properties = obj.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
+
+            foreach (FieldInfo field in Fields)
+            {
+                field.SetValue(obj, faker.Create(field.FieldType));
+            }
+
+            foreach(PropertyInfo property in Properties)
+            {
+                if (property.CanWrite)
+                {
+                    property.SetValue(obj, faker.Create(property.PropertyType));
+                }
+            }
+            return obj;
         }
 
         public IValueGenerator FindGenerator(Type type)
