@@ -1,0 +1,7 @@
+D:\5 сем\СПП\Fucker\Fucker\Fucker\obj\Debug\Fucker.csprojAssemblyReference.cache
+D:\5 сем\СПП\Fucker\Fucker\Fucker\obj\Debug\Fucker.csproj.CoreCompileInputs.cache
+D:\5 сем\СПП\Fucker\Fucker\Fucker\bin\Debug\Fucker.exe.config
+D:\5 сем\СПП\Fucker\Fucker\Fucker\bin\Debug\Fucker.exe
+D:\5 сем\СПП\Fucker\Fucker\Fucker\bin\Debug\Fucker.pdb
+D:\5 сем\СПП\Fucker\Fucker\Fucker\obj\Debug\Fucker.exe
+D:\5 сем\СПП\Fucker\Fucker\Fucker\obj\Debug\Fucker.pdb
