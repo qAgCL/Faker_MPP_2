@@ -71,26 +71,64 @@ namespace Facker
                 return generator.Generate(Context);
             }
 
-            var obj = Activator.CreateInstance(type);
+            var obj = CreateObject(type);
 
-            FieldInfo[] Fields = obj.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public);
-            PropertyInfo[] Properties = obj.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
-
-            foreach (FieldInfo field in Fields)
+            obj = FillObject(obj);
+            return obj;
+        }
+        private object FillObject(object obj)
+        {
+            if (obj != null)
             {
-                field.SetValue(obj, faker.Create(field.FieldType));
-            }
+                FieldInfo[] Fields = obj.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public);
+                PropertyInfo[] Properties = obj.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
 
-            foreach(PropertyInfo property in Properties)
-            {
-                if (property.CanWrite)
+                foreach (FieldInfo field in Fields)
                 {
-                    property.SetValue(obj, faker.Create(property.PropertyType));
+                    field.SetValue(obj, Create(field.FieldType));
+                }
+
+                foreach (PropertyInfo property in Properties)
+                {
+                    if (property.CanWrite)
+                    {
+                        property.SetValue(obj, Create(property.PropertyType));
+                    }
                 }
             }
             return obj;
         }
+        private object CreateObject(Type type) {
 
+            ConstructorInfo[] BufConstructors = type.GetConstructors(BindingFlags.Instance | BindingFlags.Public);
+
+            IEnumerable<ConstructorInfo> Constructors = BufConstructors.OrderByDescending(Constructor => Constructor.GetParameters().Length);
+     
+            object Object = null;
+
+            foreach (ConstructorInfo Constructor in Constructors)
+            {
+                ParameterInfo[] ParametersInfo = Constructor.GetParameters();
+                object[] Parametrs = new object[ParametersInfo.Length];
+                for (int i = 0; i < Parametrs.Length; i++)
+                {
+                    Parametrs[i] = Create(ParametersInfo[i].ParameterType);
+                }
+                try
+                {
+                    Object = Constructor.Invoke(Parametrs);
+                    break;
+                }
+                catch
+                {
+                    continue;
+                }
+            }
+            if ((Object == null) && (type.IsValueType)){
+                Object = Activator.CreateInstance(type);
+            }
+            return Object;
+        } 
         public IValueGenerator FindGenerator(Type type)
         {
             if (type.IsGenericType)
