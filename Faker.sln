@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.28307.1231
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Faker", "Faker\Faker.csproj", "{09CC1F1B-649D-407F-9DF4-2AA4C861FBA1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StringGenerator", "StringGenerator\StringGenerator.csproj", "{CFC131EE-4123-4328-AAA1-426718A27DED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DateTimeGenerator", "DateTimeGenerator\DateTimeGenerator.csproj", "{94734301-4257-40A7-8FE6-E6F63C6DABC8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{09CC1F1B-649D-407F-9DF4-2AA4C861FBA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09CC1F1B-649D-407F-9DF4-2AA4C861FBA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09CC1F1B-649D-407F-9DF4-2AA4C861FBA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFC131EE-4123-4328-AAA1-426718A27DED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFC131EE-4123-4328-AAA1-426718A27DED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFC131EE-4123-4328-AAA1-426718A27DED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFC131EE-4123-4328-AAA1-426718A27DED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94734301-4257-40A7-8FE6-E6F63C6DABC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94734301-4257-40A7-8FE6-E6F63C6DABC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94734301-4257-40A7-8FE6-E6F63C6DABC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94734301-4257-40A7-8FE6-E6F63C6DABC8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

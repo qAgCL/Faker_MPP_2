@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -10,7 +11,7 @@ namespace Facker
     class Faker: IFaker
     {
         private Dictionary<Type, IValueGenerator> generators;
-        
+        private Stack<Type> CircleDepend = new Stack<Type>();
         public Faker()
         { 
             generators = new Dictionary<Type, IValueGenerator>();
@@ -25,6 +26,9 @@ namespace Facker
                 }
             }
             generators.Add(typeof(List<>), new ListGenerator());
+
+         
+           ScanPlugins(AppDomain.CurrentDomain.BaseDirectory+"Plugins\\");
 
         }
         private bool IsRequiredType(Type GeneratorType, Type RequiredType)
@@ -54,13 +58,37 @@ namespace Facker
             return (T)Create(typeof(T));
         }
 
+        private void ScanPlugins(string directory)
+        {
+            
+            foreach (var file in Directory.EnumerateFiles(directory, "*.dll", SearchOption.AllDirectories))
+            {
+                
+                    var ass = Assembly.LoadFile(file);
+                    foreach (Type type in ass.GetTypes())
+                    {
+                        if (IsRequiredType(type, typeof(Generator<>)))
+                        {
+                            if (type.BaseType.GetGenericArguments().Count() > 0)
+                            {
+                                generators.Add(type.BaseType.GetGenericArguments()[0], (IValueGenerator)Activator.CreateInstance(type));
+                            }
+                        }
+                    }
 
+               
+            }
+
+        }
         public object Create(Type type) 
         {
-            Faker faker=new Faker();
-
+            if (CircleDepend.Where(CircleType => CircleType == type).Count() >= 5)
+            {
+                return GetDefaultValue(type);
+            }
+            CircleDepend.Push(type);
+            Faker faker = new Faker();
             int seed = (int)DateTime.Now.Ticks & 0x0000FFFF;
-            
             GeneratorContext Context = new GeneratorContext(new Random(seed),type, faker);
 
 
@@ -68,12 +96,14 @@ namespace Facker
           
             if (generator!=null)
             {
+                CircleDepend.Pop();
                 return generator.Generate(Context);
             }
 
             var obj = CreateObject(type);
-
+            
             obj = FillObject(obj);
+            CircleDepend.Pop();
             return obj;
         }
         private object FillObject(object obj)
@@ -85,12 +115,16 @@ namespace Facker
 
                 foreach (FieldInfo field in Fields)
                 {
-                    field.SetValue(obj, Create(field.FieldType));
+                  
+                    if (IsValueSet(field,obj))
+                    {
+                        field.SetValue(obj, Create(field.FieldType));
+                    }
                 }
 
                 foreach (PropertyInfo property in Properties)
                 {
-                    if (property.CanWrite)
+                    if ((property.CanWrite)&& (IsValueSet(property, obj)))
                     {
                         property.SetValue(obj, Create(property.PropertyType));
                     }
@@ -98,8 +132,31 @@ namespace Facker
             }
             return obj;
         }
+        private bool IsValueSet(MemberInfo member, object obj)
+        {
+            if (member is FieldInfo field)
+            {
+                if (GetDefaultValue(field.FieldType) == null) return true;
+
+                if (field.GetValue(obj).Equals(GetDefaultValue(field.FieldType))) return true;
+            }
+            if (member is PropertyInfo property)
+            {
+                if (GetDefaultValue(property.PropertyType) == null) return true;
+                if (property.GetValue(obj).Equals(GetDefaultValue(property.PropertyType))) return true;
+            }
+            return false;
+        }
+        private  object GetDefaultValue(Type t)
+        {
+            if (t.IsValueType)
+                return Activator.CreateInstance(t);
+            else
+                return null;
+        }
         private object CreateObject(Type type) {
 
+            
             ConstructorInfo[] BufConstructors = type.GetConstructors(BindingFlags.Instance | BindingFlags.Public);
 
             IEnumerable<ConstructorInfo> Constructors = BufConstructors.OrderByDescending(Constructor => Constructor.GetParameters().Length);

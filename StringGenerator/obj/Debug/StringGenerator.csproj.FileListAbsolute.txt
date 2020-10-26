@@ -1,0 +1,10 @@
+D:\5 сем\СПП\Fucker\Faker\StringGenerator\obj\Debug\StringGenerator.csproj.CoreCompileInputs.cache
+D:\5 сем\СПП\Fucker\Faker\StringGenerator\bin\Debug\StringGenerator.dll
+D:\5 сем\СПП\Fucker\Faker\StringGenerator\bin\Debug\StringGenerator.pdb
+D:\5 сем\СПП\Fucker\Faker\StringGenerator\obj\Debug\StringGenerator.dll
+D:\5 сем\СПП\Fucker\Faker\StringGenerator\obj\Debug\StringGenerator.pdb
+D:\5 сем\СПП\Fucker\Faker\StringGenerator\bin\Debug\Fucker.exe
+D:\5 сем\СПП\Fucker\Faker\StringGenerator\bin\Debug\Fucker.pdb
+D:\5 сем\СПП\Fucker\Faker\StringGenerator\bin\Debug\Fucker.exe.config
+D:\5 сем\СПП\Fucker\Faker\StringGenerator\obj\Debug\StringGenerator.csprojAssemblyReference.cache
+D:\5 сем\СПП\Fucker\Faker\StringGenerator\obj\Debug\StringGenerator.csproj.CopyComplete

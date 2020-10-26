@@ -14,10 +14,6 @@ namespace Facker
 
             return ObjectGeneration(generatorContext.Random);
         }
-        public bool CanGenerate(Type type)
-        {
-            return false;
-        }
     }
 
     public class ListGenerator : IValueGenerator
@@ -36,9 +32,6 @@ namespace Facker
             return list;
         }
 
-        public bool CanGenerate(Type type)
-        {
-            return false;
-        }
+
     }
 }

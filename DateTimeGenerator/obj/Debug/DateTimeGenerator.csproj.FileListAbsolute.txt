@@ -1,0 +1,10 @@
+D:\5 сем\СПП\Fucker\Faker\DateTimeGenerator\bin\Debug\DateTimeGenerator.dll
+D:\5 сем\СПП\Fucker\Faker\DateTimeGenerator\bin\Debug\DateTimeGenerator.pdb
+D:\5 сем\СПП\Fucker\Faker\DateTimeGenerator\bin\Debug\Fucker.exe
+D:\5 сем\СПП\Fucker\Faker\DateTimeGenerator\bin\Debug\Fucker.pdb
+D:\5 сем\СПП\Fucker\Faker\DateTimeGenerator\bin\Debug\Fucker.exe.config
+D:\5 сем\СПП\Fucker\Faker\DateTimeGenerator\obj\Debug\DateTimeGenerator.csprojAssemblyReference.cache
+D:\5 сем\СПП\Fucker\Faker\DateTimeGenerator\obj\Debug\DateTimeGenerator.csproj.CoreCompileInputs.cache
+D:\5 сем\СПП\Fucker\Faker\DateTimeGenerator\obj\Debug\DateTimeGenerator.csproj.CopyComplete
+D:\5 сем\СПП\Fucker\Faker\DateTimeGenerator\obj\Debug\DateTimeGenerator.dll
+D:\5 сем\СПП\Fucker\Faker\DateTimeGenerator\obj\Debug\DateTimeGenerator.pdb
