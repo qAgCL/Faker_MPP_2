@@ -15,7 +15,7 @@ namespace StringGenerator
 
             for (int i = 0; i < ByteArray.Length; i++)
             {
-                ByteArray[i] = (byte)random.Next(1,255);
+                ByteArray[i] = (byte)random.Next(90,255);
             }
             string result = System.Text.Encoding.UTF8.GetString(ByteArray);
             return result;

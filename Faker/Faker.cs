@@ -117,11 +117,14 @@ namespace Facker
                     if (IsValueSet(field,obj))
                     {
                         ConfigurationRule configurationRule = null;
-                        foreach (ConfigurationRule Rule in Configuration.ConfigurationRules)
+                        if (Configuration != null)
                         {
-                            if ((Rule.FieldName == field.Name) && (Rule.FieldType == field.FieldType))
+                            foreach (ConfigurationRule Rule in Configuration.ConfigurationRules)
                             {
-                                configurationRule = Rule;
+                                if ((Rule.FieldName == field.Name) && (Rule.FieldType == field.FieldType))
+                                {
+                                    configurationRule = Rule;
+                                }
                             }
                         }
                         if (configurationRule == null)
@@ -145,11 +148,14 @@ namespace Facker
                     if ((property.CanWrite)&& (IsValueSet(property, obj)))
                     {
                         ConfigurationRule configurationRule = null;
-                        foreach (ConfigurationRule Rule in Configuration.ConfigurationRules)
+                        if (Configuration != null)
                         {
-                            if ((Rule.FieldName == property.Name) && (Rule.FieldType == property.PropertyType))
+                            foreach (ConfigurationRule Rule in Configuration.ConfigurationRules)
                             {
-                                configurationRule = Rule;
+                                if ((Rule.FieldName == property.Name) && (Rule.FieldType == property.PropertyType))
+                                {
+                                    configurationRule = Rule;
+                                }
                             }
                         }
                         if (configurationRule == null)
@@ -207,11 +213,16 @@ namespace Facker
                 for (int i = 0; i < Parametrs.Length; i++)
                 {
                     
+
                     ConfigurationRule configurationRule = null;
-                    foreach (ConfigurationRule Rule in Configuration.ConfigurationRules)
+                    if (Configuration != null)
                     {
-                        if ((Rule.FieldName == ParametersInfo[i].Name)&&(Rule.FieldType == ParametersInfo[i].ParameterType)){
-                            configurationRule = Rule;
+                        foreach (ConfigurationRule Rule in Configuration.ConfigurationRules)
+                        {
+                            if ((Rule.FieldName == ParametersInfo[i].Name) && (Rule.FieldType == ParametersInfo[i].ParameterType))
+                            {
+                                configurationRule = Rule;
+                            }
                         }
                     }
                     if (configurationRule == null)
