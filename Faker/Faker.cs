@@ -12,24 +12,23 @@ namespace Facker
     {
         private Dictionary<Type, IValueGenerator> generators;
         private Stack<Type> CircleDepend = new Stack<Type>();
-        public Faker()
-        { 
+        private FakerConfiguration Configuration = null;
+        public Faker(FakerConfiguration Configur)
+        {
             generators = new Dictionary<Type, IValueGenerator>();
             foreach (Type t in Assembly.GetExecutingAssembly().GetTypes())
             {
                 if (IsRequiredType(t, typeof(Generator<>)))
                 {
-                    if (t.BaseType.GetGenericArguments().Count() > 0)
+                    if ((t.BaseType.GetGenericArguments().Count() > 0)&&(t.Namespace== "SimpleTypeGenerator"))
                     {
                         generators.Add(t.BaseType.GetGenericArguments()[0], (IValueGenerator)Activator.CreateInstance(t));
                     }
                 }
             }
             generators.Add(typeof(List<>), new ListGenerator());
-
-         
-           ScanPlugins(AppDomain.CurrentDomain.BaseDirectory+"Plugins\\");
-
+            ScanPlugins(AppDomain.CurrentDomain.BaseDirectory+"Plugins\\");
+            this.Configuration = Configur;
         }
         private bool IsRequiredType(Type GeneratorType, Type RequiredType)
         {
@@ -84,10 +83,11 @@ namespace Facker
         {
             if (CircleDepend.Where(CircleType => CircleType == type).Count() >= 5)
             {
+                Console.WriteLine("Circular Dependency");
                 return GetDefaultValue(type);
             }
             CircleDepend.Push(type);
-            Faker faker = new Faker();
+            Faker faker = new Faker(Configuration);
             int seed = (int)DateTime.Now.Ticks & 0x0000FFFF;
             GeneratorContext Context = new GeneratorContext(new Random(seed),type, faker);
 
@@ -112,13 +112,31 @@ namespace Facker
             {
                 FieldInfo[] Fields = obj.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public);
                 PropertyInfo[] Properties = obj.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public);
-
                 foreach (FieldInfo field in Fields)
                 {
-                  
                     if (IsValueSet(field,obj))
                     {
-                        field.SetValue(obj, Create(field.FieldType));
+                        ConfigurationRule configurationRule = null;
+                        foreach (ConfigurationRule Rule in Configuration.ConfigurationRules)
+                        {
+                            if ((Rule.FieldName == field.Name) && (Rule.FieldType == field.FieldType))
+                            {
+                                configurationRule = Rule;
+                            }
+                        }
+                        if (configurationRule == null)
+                        {
+                            field.SetValue(obj, Create(field.FieldType));
+                        }
+                        else
+                        {
+                            int seed = (int)DateTime.Now.Ticks & 0x0000FFFF;
+                            Faker faker = new Faker(Configuration);
+                            GeneratorContext Context = new GeneratorContext(new Random(seed), field.FieldType, faker);
+                            IValueGenerator test = (IValueGenerator)Activator.CreateInstance(configurationRule.GeneratorName);
+                            field.SetValue(obj,((IValueGenerator)Activator.CreateInstance(configurationRule.GeneratorName)).Generate(Context));
+                        }
+                        
                     }
                 }
 
@@ -126,7 +144,26 @@ namespace Facker
                 {
                     if ((property.CanWrite)&& (IsValueSet(property, obj)))
                     {
-                        property.SetValue(obj, Create(property.PropertyType));
+                        ConfigurationRule configurationRule = null;
+                        foreach (ConfigurationRule Rule in Configuration.ConfigurationRules)
+                        {
+                            if ((Rule.FieldName == property.Name) && (Rule.FieldType == property.PropertyType))
+                            {
+                                configurationRule = Rule;
+                            }
+                        }
+                        if (configurationRule == null)
+                        {
+                            property.SetValue(obj, Create(property.PropertyType));
+                        }
+                        else
+                        {
+                            int seed = (int)DateTime.Now.Ticks & 0x0000FFFF;
+                            Faker faker = new Faker(Configuration);
+                            GeneratorContext Context = new GeneratorContext(new Random(seed), property.PropertyType, faker);
+                            IValueGenerator test = (IValueGenerator)Activator.CreateInstance(configurationRule.GeneratorName);
+                            property.SetValue(obj, ((IValueGenerator)Activator.CreateInstance(configurationRule.GeneratorName)).Generate(Context));
+                        }
                     }
                 }
             }
@@ -169,7 +206,26 @@ namespace Facker
                 object[] Parametrs = new object[ParametersInfo.Length];
                 for (int i = 0; i < Parametrs.Length; i++)
                 {
-                    Parametrs[i] = Create(ParametersInfo[i].ParameterType);
+                    
+                    ConfigurationRule configurationRule = null;
+                    foreach (ConfigurationRule Rule in Configuration.ConfigurationRules)
+                    {
+                        if ((Rule.FieldName == ParametersInfo[i].Name)&&(Rule.FieldType == ParametersInfo[i].ParameterType)){
+                            configurationRule = Rule;
+                        }
+                    }
+                    if (configurationRule == null)
+                    {
+                        Parametrs[i] = Create(ParametersInfo[i].ParameterType);
+                    }
+                    else
+                    {
+                        int seed = (int)DateTime.Now.Ticks & 0x0000FFFF;
+                        Faker faker = new Faker(Configuration);
+                        GeneratorContext Context = new GeneratorContext(new Random(seed), type, faker);
+                        IValueGenerator test = (IValueGenerator)Activator.CreateInstance(configurationRule.GeneratorName);
+                        Parametrs[i] = ((IValueGenerator)Activator.CreateInstance(configurationRule.GeneratorName)).Generate(Context);
+                    }
                 }
                 try
                 {
