@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Facker
 {
-    class FakerConfiguration
+    public class FakerConfiguration
     {
         public List<ConfigurationRule> ConfigurationRules { get; }
         public FakerConfiguration()
@@ -24,7 +24,7 @@ namespace Facker
             ConfigurationRules.Add(configurationRule);
        }
     }
-    class ConfigurationRule
+    public class ConfigurationRule
     {
         public Type ClassName { get; }
         public Type FieldType { get; }

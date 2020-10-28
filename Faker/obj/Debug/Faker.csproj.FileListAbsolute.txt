@@ -4,3 +4,4 @@ D:\5 сем\СПП\Fucker\Faker\Faker\bin\Debug\Fucker.pdb
 D:\5 сем\СПП\Fucker\Faker\Faker\obj\Debug\Faker.csproj.CoreCompileInputs.cache
 D:\5 сем\СПП\Fucker\Faker\Faker\obj\Debug\Fucker.exe
 D:\5 сем\СПП\Fucker\Faker\Faker\obj\Debug\Fucker.pdb
+D:\5 сем\СПП\Fucker\Faker\Faker\obj\Debug\Faker.csprojAssemblyReference.cache

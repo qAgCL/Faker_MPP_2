@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Facker
 {
-    class Faker: IFaker
+    public class Faker: IFaker
     {
         private Dictionary<Type, IValueGenerator> generators;
         private Stack<Type> CircleDepend = new Stack<Type>();
@@ -27,7 +27,7 @@ namespace Facker
                 }
             }
             generators.Add(typeof(List<>), new ListGenerator());
-            ScanPlugins(AppDomain.CurrentDomain.BaseDirectory+"Plugins\\");
+            ScanPlugins(AppDomain.CurrentDomain.BaseDirectory+"\\Plugins\\");
             this.Configuration = Configur;
         }
         private bool IsRequiredType(Type GeneratorType, Type RequiredType)
